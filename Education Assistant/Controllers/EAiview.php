@@ -1,0 +1,76 @@
+<?php
+include '../Model/EA.php';
+  session_start();  
+  if(isset($_SESSION['friend']))
+  {
+    $suser=$_SESSION['friend'];
+  }
+  elseif(isset($_SESSION['sendfrom']))
+  {
+    $suser=$_SESSION['sendfrom'];
+  }
+  elseif(isset($_SESSION['sendto']))
+  {
+    $suser=$_SESSION['sendto'];
+  }
+  else
+  {
+    $suser=$_SESSION['suser'];
+  }
+  $username=$_SESSION['username'];
+  $usertype=$_SESSION['usertype'];
+  
+  if(!isset($suser)) 
+  {
+    header('Location:../View/EAstuindex.php');
+  }
+  elseif(isset($_POST['goback']))
+  {
+    unset($_SESSION['sendby']);
+    unset($_SESSION['sendto']);
+    unset($_SESSION['sendfrom']);
+    unset($_SESSION['friend']);
+    header('Location:../View/EAstuindex.php');
+  }
+  elseif(isset($_POST['logout']))
+  {
+    unset($_SESSION['sendby']);
+    unset($_SESSION['sendto']);
+    unset($_SESSION['sendfrom']);
+    unset($_SESSION['friend']);
+    header('Location:../View/EAlogin.php');
+  }
+  elseif(isset($_POST['viewpublications'])) 
+  {
+    $_SESSION['published']=showPublication();
+    if($_SESSION['published']!=false)
+    {
+      header('Location:../View/EAview.php');
+    }
+    else
+    {
+      unset($_SESSION['published']);
+      $_SESSION['mgs']="<center><warning>No publications found!</warning></center>";
+      header('Location:../View/EAview.php');
+    }
+  }
+  elseif(isset($_POST['creq']))
+  {
+    $sendto=$_SESSION['suser'];
+    reqConn($username,$sendto);
+    $_SESSION['sendby']="clicked";
+    $_SESSION['mgs']="<center><warning>Connection request sent successfully!</warning></center>";
+    header('Location:../View/EAview.php');
+  }
+  elseif(isset($_POST['cancelreq']))
+  {
+    $user=$_POST['cancelreq'];
+    isCancelled($user);
+    $_SESSION['mgs']="<center><warning>Connection request CANCELLED!</warning></center>";
+    header('Location:../View/EAview.php');
+  }
+  else
+  {
+    header('Location:../View/EAview.php');
+  }
+?>

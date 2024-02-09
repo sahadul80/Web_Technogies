@@ -1,0 +1,22 @@
+<?php
+	if(isset($_POST['login']))
+	{
+		header("Location:../View/EAlogin.php");
+	}
+	elseif(isset($_POST['treg']))
+	{
+		header("Location:../View/EAteacherreg.php");
+	}
+	elseif(isset($_POST['sreg']))
+	{
+		header("Location:../View/EAstudentreg.php");
+	}
+	elseif(isset($_POST['home']))
+	{
+		header("Location:../View/EAhome.php");
+	}
+	else
+	{
+		header("Location:../View/EAregister.php");
+	}
+?>
